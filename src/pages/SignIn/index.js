@@ -1,18 +1,29 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import './signin.css'
+import { AuthContext } from "../../contexts/auth"
 
 export default function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const { handleSignIn } = useContext(AuthContext)
+
+    function SignIn(e) {
+        e.preventDefault()
+        handleSignIn(email, password)
+    }
+
     return (
         <div className="container">
-            <div className="form">
-                <img src={require("../../assets/logo-maior.png")} />
+            <form className="form" onSubmit={SignIn}>
+                <div className="logo-container">
+                    <img src={require("../../assets/logo-maior.png")} />
+                </div>
 
-                <form className="form-container">
+                <div className="form-container">
                     <input
+                        autoComplete={false}
                         type="email"
                         placeholder="E-mail"
                         value={email}
@@ -20,16 +31,17 @@ export default function SignIn() {
                     />
 
                     <input
+                        autoComplete={false}
                         type="password"
                         placeholder="Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button>Acessar</button>
+                    <button type="submit">Acessar</button>
                     <Link to={'/signup'}>Criar uma conta</Link>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     )
 }

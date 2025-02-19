@@ -1,17 +1,27 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../contexts/auth"
 
 export default function SignUp() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const { handleSignUp } = useContext(AuthContext)
+
+    function SignUp(e) {
+        e.preventDefault()
+        handleSignUp(name, email, password)
+    }
+
     return (
         <div className="container">
-            <div className="form">
-                <img src={require("../../assets/logo-maior.png")} />
+            <form className="form" onSubmit={SignUp}>
+                <div className="logo-container">
+                    <img src={require("../../assets/logo-maior.png")} />
+                </div>
 
-                <form className="form-container">
+                <div className="form-container">
                     <input
                         type="text"
                         placeholder="Nome"
@@ -33,10 +43,10 @@ export default function SignUp() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button>Cadastrar</button>
+                    <button type="submit">Cadastrar</button>
                     <Link to={'/'}>Já possuo uma conta</Link>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     )
 }
