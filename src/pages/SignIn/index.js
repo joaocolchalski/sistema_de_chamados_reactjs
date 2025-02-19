@@ -1,7 +1,15 @@
 import { useContext, useState } from "react"
-import { Link } from "react-router-dom"
-import './signin.css'
 import { AuthContext } from "../../contexts/auth"
+import {
+    Container,
+    Form,
+    LogoContainer,
+    LogoContainerImg,
+    FormContainer,
+    FormContainerInput,
+    FormContainerButton,
+    StyledLink
+} from "../SignUp/style"
 
 export default function SignIn() {
     const [email, setEmail] = useState('')
@@ -15,33 +23,31 @@ export default function SignIn() {
     }
 
     return (
-        <div className="container">
-            <form className="form" onSubmit={SignIn}>
-                <div className="logo-container">
-                    <img src={require("../../assets/logo-maior.png")} />
-                </div>
+        <Container>
+            <Form onSubmit={SignIn}>
+                <LogoContainer >
+                    <LogoContainerImg src={require("../../assets/logo-maior.png")} alt="Logo da Empresa" />
+                </LogoContainer>
 
-                <div className="form-container">
-                    <input
-                        autoComplete={false}
+                <FormContainer>
+                    <FormContainerInput
                         type="email"
                         placeholder="E-mail"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
-                    <input
-                        autoComplete={false}
+                    <FormContainerInput
                         type="password"
                         placeholder="Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button type="submit">Acessar</button>
-                    <Link to={'/signup'}>Criar uma conta</Link>
-                </div>
-            </form>
-        </div>
+                    <FormContainerButton type="submit">Acessar</FormContainerButton>
+                    <StyledLink to={'/signup'}>Criar uma conta</StyledLink>
+                </FormContainer>
+            </Form>
+        </Container>
     )
 }

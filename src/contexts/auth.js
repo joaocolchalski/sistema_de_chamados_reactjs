@@ -1,20 +1,71 @@
 import { useNavigate } from "react-router-dom";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 import { auth, db } from "../firebaseConnection";
 import {
     addDoc,
     collection,
     doc,
 } from "firebase/firestore";
-import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export const AuthContext = createContext({})
 
 export default function AuthProvider({ children }) {
+    const [user, setUser] = useState({})
+    const [loading, setLoading] = useState(true)
+    const [signed, setSigned] = useState(false)
     const navidate = useNavigate()
 
+    useEffect(() => {
+        function checkLogin() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const userData = {
+                        uid: user.uid,
+                        email: user.email,
+                        name: user.displayName,
+                        photoURL: user.photoURL
+                    }
+
+                    localStorage.setItem('@detailUser', JSON.stringify(userData))
+
+                    setUser(userData)
+                    setSigned(true)
+                    setLoading(false)
+                } else {
+                    localStorage.removeItem('@detailUser')
+                    setLoading(false)
+                    setSigned(false)
+                    setUser({})
+                }
+            })
+        }
+
+        checkLogin()
+    }, [])
+
     async function handleSignIn(email, password) {
-        alert(email)
+        if (email.trim().length === 0 || password.trim().length === 0) {
+            alert('Preencha todos os campos!')
+            return
+        }
+
+        await signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                navidate('/home', { replace: true })
+                alert('Seja bem vindo de volta!')
+            })
+            .catch((error) => {
+                if (error.code === 'auth/missing-password') {
+                    alert('A senha é obrigatória')
+                } else if (error.code === 'auth/invalid-credential') {
+                    alert('Email incorreto ou senha incorreta!')
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('O email é obrigatório')
+                } else {
+                    console.log(error.code)
+                }
+            })
     }
 
     async function handleSignUp(name, email, password) {
@@ -24,16 +75,12 @@ export default function AuthProvider({ children }) {
         }
 
         await createUserWithEmailAndPassword(auth, email, password)
-            .then(async (value) => {
-                const collectionRef = collection(db, 'users')
-                await addDoc(collectionRef, {
-                    name: name,
-                    email: value.user.email,
-                    createdAt: new Date(),
-                    avatarUrl: ''
-                }).then(() => {
-                    navidate('/home', { replace: true })
+            .then(() => {
+                updateProfile(auth.currentUser, {
+                    displayName: name
                 })
+                navidate('/home', { replace: true })
+                alert('Bem vindo a plataforma!')
             })
             .catch((err) => {
                 if (err.code === 'auth/email-already-in-use') {
@@ -52,8 +99,12 @@ export default function AuthProvider({ children }) {
             })
     }
 
+    async function handleSignOut() {
+        await signOut(auth)
+    }
+
     return (
-        <AuthContext.Provider value={{ handleSignIn, handleSignUp }}>
+        <AuthContext.Provider value={{ handleSignIn, handleSignUp, handleSignOut, signed, loading, user }}>
             {children}
         </AuthContext.Provider>
     )

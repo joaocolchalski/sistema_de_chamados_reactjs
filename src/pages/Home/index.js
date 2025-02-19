@@ -1,7 +1,22 @@
+import { useContext } from "react"
+import { AuthContext } from "../../contexts/auth"
+import Header from "../../components/Header"
+
+import {
+    Container,
+    ContainerHome,
+    HeaderHome
+} from "./style"
+
 export default function Home() {
     return (
-        <div>
-            <h1>Página Home</h1>
-        </div>
+        <Container>
+            <Header />
+            <ContainerHome>
+                <HeaderHome>
+
+                </HeaderHome>
+            </ContainerHome>
+        </Container>
     )
 }
