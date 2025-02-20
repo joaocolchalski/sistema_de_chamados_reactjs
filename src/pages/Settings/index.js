@@ -3,75 +3,65 @@ import Header from "../../components/Header"
 
 
 import {
+    Screen,
     Container,
-    ContainerSettings,
-    HeaderSettings,
+    Title,
     InputUploadPhotoSetting,
-    ButtonUploadPhotoSettings,
-    LabelSettings,
-    InputSettings,
-    ButtonSaveSettings,
+    LabelUploadPhotoSettings,
+    Label,
+    Input,
+    ButtonSave,
     ButtonSignOut
 } from "./style"
 
 import { LuSettings, LuUpload } from "react-icons/lu";
-import { AuthContext } from "../../contexts/auth";
+import { AuthContext } from "../../contexts/app";
 
 export default function Settings() {
-    const { user, handleSignOut, handleUpdateName } = useContext(AuthContext)
+    const { user, handleSignOut, handleUpdateName, handleFileChange, progressUpload, profilePhotoURL } = useContext(AuthContext)
 
     const [name, setName] = useState(user.name)
-    const [email, setEmail] = useState(user.email)
-    const [image, setImage] = useState(null);
-
-    const photoURL = user?.photoURL ? user?.photoURL : require('../../assets/user.png')
-
-    const handleFileChange = (event) => {
-        const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
-        if (file) {
-            const imageUrl = URL.createObjectURL(file); // Cria uma URL para visualizar a imagem
-            setImage(imageUrl);
-        }
-    };
 
     return (
-        <Container>
+        <Screen>
             <Header />
-            <ContainerSettings>
-                <HeaderSettings>
+
+            <Container>
+                <Title>
                     <LuSettings /> Minha Conta
-                </HeaderSettings>
+                </Title>
+
+                <LabelUploadPhotoSettings htmlFor="file-upload" photoURL={profilePhotoURL ? `${profilePhotoURL}` : require('../../assets/user.png')}>
+                    {progressUpload > 0 && progressUpload < 100 ? `${progressUpload.toFixed(0)}%` : <LuUpload />}
+                </LabelUploadPhotoSettings>
 
                 <InputUploadPhotoSetting
+                    id="file-upload"
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                     style={{ display: 'none' }}
                 />
 
-                <ButtonUploadPhotoSettings photoURL={photoURL}>
-                    <LuUpload />
-                </ButtonUploadPhotoSettings>
-
-                <LabelSettings>Nome:</LabelSettings>
-                <InputSettings
+                <Label>Nome:</Label>
+                <Input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
 
-                <LabelSettings>Email:</LabelSettings>
-                <InputSettings
+                <Label>Email:</Label>
+                <Input
                     id="input-email"
                     type="text"
-                    value={email}
+                    value={user.email}
                     disabled={true}
                 />
 
-                <ButtonSaveSettings onClick={() => handleUpdateName(name)}>Salvar</ButtonSaveSettings>
+                <ButtonSave onClick={() => handleUpdateName(name)}>Salvar</ButtonSave>
 
                 <ButtonSignOut onClick={handleSignOut}>Sair</ButtonSignOut>
-            </ContainerSettings>
-        </Container>
+            </Container>
+        </Screen>
     )
 }

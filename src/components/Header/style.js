@@ -24,15 +24,21 @@ export const ContainerImgUser = styled.div`
     object-fit: cover;
 `
 
-export const ImgUser = styled.img`
-    background-color: black;
-    width: 50%;
-    max-width: 172px;
-    height: auto;
-    max-height: 172px;
+export const ImgUser = styled.label`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    min-height: 100px;
     border-radius: 50%;
-    margin: 42px 0;
-    object-fit: cover;
+    border: 0;
+    background-image: url(${({ photoURL }) => photoURL});
+    background-size: cover;
+    background-color: #000;
+    margin: 20px;
 `
 
 export const ContainerButtonsNav = styled.div`

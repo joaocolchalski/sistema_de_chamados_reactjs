@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../contexts/auth';
-import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/app';
 import { LuHouse, LuUsers, LuSettings } from "react-icons/lu";
 import { useLocation } from 'react-router-dom';
 
@@ -13,16 +12,14 @@ import {
 } from './style';
 
 export default function Header() {
-    const { user } = useContext(AuthContext)
-
-    const photoURL = user?.photoURL ? user?.photoURL : require('../../assets/user.png')
+    const { profilePhotoURL } = useContext(AuthContext)
 
     const location = useLocation()
 
     return (
         <Container>
             <ContainerImgUser>
-                <ImgUser src={photoURL} alt='Imagem de Perfil do Usuário' />
+                <ImgUser photoURL={profilePhotoURL ? `${profilePhotoURL}` : require('../../assets/user.png')} alt='Imagem de Perfil do Usuário' />
             </ContainerImgUser>
 
             <ContainerButtonsNav>

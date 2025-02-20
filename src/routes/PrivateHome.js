@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "../contexts/auth";
+import { AuthContext } from "../contexts/app";
 import { Navigate } from "react-router-dom";
 
 export default function PrivateHome({ children }) {

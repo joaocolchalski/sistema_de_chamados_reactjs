@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
-import { auth, db } from "../firebaseConnection";
+import { auth, db, storage } from "../firebaseConnection";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
     addDoc,
     collection,
@@ -14,11 +15,14 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
     const [signed, setSigned] = useState(false)
-    const navidate = useNavigate()
+    const [progressUpload, setProgressUpload] = useState(0);
+    const [profilePhotoURL, setProfilePhotoURL] = useState('')
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         function checkLogin() {
-            onAuthStateChanged(auth, (user) => {
+            onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     const userData = {
                         uid: user.uid,
@@ -29,6 +33,7 @@ export default function AuthProvider({ children }) {
 
                     localStorage.setItem('@detailUser', JSON.stringify(userData))
 
+                    setProfilePhotoURL(user.photoURL)
                     setUser(userData)
                     setSigned(true)
                     setLoading(false)
@@ -52,7 +57,7 @@ export default function AuthProvider({ children }) {
 
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                navidate('/home', { replace: true })
+                navigate('/home', { replace: true })
                 alert('Seja bem vindo de volta!')
             })
             .catch((error) => {
@@ -75,11 +80,20 @@ export default function AuthProvider({ children }) {
         }
 
         await createUserWithEmailAndPassword(auth, email, password)
-            .then(() => {
+            .then((value) => {
+                const userData = {
+                    uid: value.user.ui,
+                    email: email,
+                    name: name,
+                    photoURL: value.user.photoURL
+                }
+                setUser(userData)
+
                 updateProfile(auth.currentUser, {
                     displayName: name
                 })
-                navidate('/home', { replace: true })
+
+                navigate('/home', { replace: true })
                 alert('Bem vindo a plataforma!')
             })
             .catch((err) => {
@@ -108,12 +122,78 @@ export default function AuthProvider({ children }) {
             displayName: name
         })
             .then(() => {
-                alert('Nome Atualizado com Sucesso!')
+                alert('Nome atualizado com sucesso!')
+            })
+    }
+
+    function handleFileChange(event) {
+        const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
+        if (file) {
+            const storageRef = ref(storage, `users/${user.uid}`)
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    setProgressUpload(progress)
+                },
+                (err) => {
+                    alert('Erro ao fazer upload da foto!')
+                    console.log(err)
+                    setProgressUpload(0)
+                },
+                async () => {
+                    const url = await getDownloadURL(uploadTask.snapshot.ref)
+                    updateProfile(auth.currentUser, {
+                        photoURL: url
+                    })
+                    setProfilePhotoURL(url)
+                    setProgressUpload(0)
+                }
+            )
+        }
+    };
+
+    async function handleAddClient(name, cnpj, address) {
+        if (name.trim().length === 0 || cnpj.trim().length === 0 || address.trim().length === 0) {
+            alert('Preencha todos os campos!')
+            return
+        }
+
+        const collectionRef = collection(db, 'clients')
+
+        await addDoc(collectionRef, {
+            name: name,
+            cnpj: cnpj,
+            address: address,
+            userUID: user.uid
+        })
+            .then(() => {
+                alert('Cliete cadastrado com sucesso!')
+                navigate('/home', { replace: true })
+            })
+            .catch((err) => {
+                alert('Erro ao cadastrar o cliente!')
+                console.log(err.code)
             })
     }
 
     return (
-        <AuthContext.Provider value={{ handleSignIn, handleSignUp, handleSignOut, handleUpdateName, signed, loading, user }}>
+        <AuthContext.Provider
+            value={{
+                handleSignIn,
+                handleSignUp,
+                handleSignOut,
+                handleUpdateName,
+                handleFileChange,
+                handleAddClient,
+                signed,
+                loading,
+                user,
+                progressUpload,
+                profilePhotoURL
+            }}>
             {children}
         </AuthContext.Provider>
     )

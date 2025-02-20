@@ -1,23 +1,24 @@
 import { useContext } from "react"
-import { AuthContext } from "../../contexts/auth"
+import { AuthContext } from "../../contexts/app"
 import Header from "../../components/Header"
 import { LuMessageCircle } from "react-icons/lu";
 
 import {
+    Screen,
     Container,
-    ContainerHome,
-    HeaderHome
-} from "./style"
+    Title
+} from "../Settings/style";
 
 export default function Home() {
     return (
-        <Container>
+        <Screen>
             <Header />
-            <ContainerHome>
-                <HeaderHome>
+
+            <Container>
+                <Title>
                     <LuMessageCircle /> Atendimentos
-                </HeaderHome>
-            </ContainerHome>
-        </Container>
+                </Title>
+            </Container>
+        </Screen>
     )
 }

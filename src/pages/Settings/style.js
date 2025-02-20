@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Screen = styled.div`
     display: flex;
     width: 100%;
     min-height: 100vh;
     height: auto;
 `
 
-export const ContainerSettings = styled.div`
+export const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -17,7 +17,7 @@ export const ContainerSettings = styled.div`
     padding: 15px;
 `
 
-export const HeaderSettings = styled.p`
+export const Title = styled.p`
     display: flex;
     align-items: center;
     gap: 12px;
@@ -27,11 +27,9 @@ export const HeaderSettings = styled.p`
     border-radius: 8px;
 `
 
-export const InputUploadPhotoSetting = styled.input`
+export const InputUploadPhotoSetting = styled.input``
 
-`
-
-export const ButtonUploadPhotoSettings = styled.button`
+export const LabelUploadPhotoSettings = styled.label`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,15 +46,16 @@ export const ButtonUploadPhotoSettings = styled.button`
     color: #fff;
     font-size: 20px;
     margin-top: 30px;
+    cursor: pointer;
 `
 
-export const LabelSettings = styled.label`
+export const Label = styled.label`
     margin-top: 30px;
     font-weight: bold;
     font-size: 14px;
 `
 
-export const InputSettings = styled.input`
+export const Input = styled.input`
     margin-top: 8px;
     height: 40px;
     border: 0;
@@ -71,7 +70,7 @@ export const InputSettings = styled.input`
     `}
 `
 
-export const ButtonSaveSettings = styled.button`
+export const ButtonSave = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,6 +87,7 @@ export const ButtonSaveSettings = styled.button`
     border-radius: 5px;
     margin-top: 30px;
     transition: background-color 0.5s ease, color 0.5s ease;
+    font-weight: bold;
 
     &:hover{
         background-color: #000;
@@ -112,6 +112,7 @@ export const ButtonSignOut = styled.button`
     border-radius: 5px;
     margin-top: 10px;
     transition: background-color 0.5s ease, color 0.5s ease;
+    font-weight: bold;
 
     &:hover{
         background-color: #000;
