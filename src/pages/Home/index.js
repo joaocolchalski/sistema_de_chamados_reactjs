@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { AuthContext } from "../../contexts/auth"
 import Header from "../../components/Header"
+import { LuMessageCircle } from "react-icons/lu";
 
 import {
     Container,
@@ -14,7 +15,7 @@ export default function Home() {
             <Header />
             <ContainerHome>
                 <HeaderHome>
-
+                    <LuMessageCircle /> Atendimentos
                 </HeaderHome>
             </ContainerHome>
         </Container>

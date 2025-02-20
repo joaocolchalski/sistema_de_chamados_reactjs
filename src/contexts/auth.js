@@ -103,8 +103,17 @@ export default function AuthProvider({ children }) {
         await signOut(auth)
     }
 
+    function handleUpdateName(name) {
+        updateProfile(auth.currentUser, {
+            displayName: name
+        })
+            .then(() => {
+                alert('Nome Atualizado com Sucesso!')
+            })
+    }
+
     return (
-        <AuthContext.Provider value={{ handleSignIn, handleSignUp, handleSignOut, signed, loading, user }}>
+        <AuthContext.Provider value={{ handleSignIn, handleSignUp, handleSignOut, handleUpdateName, signed, loading, user }}>
             {children}
         </AuthContext.Provider>
     )

@@ -4,9 +4,10 @@ import cover from '../../assets/cover.png'
 
 export const Container = styled.div`
     display: flex;
-    height: 100%;
-    width: 25%;
-    max-width: 426px;
+    height: auto;
+    min-height: 100vh;
+    width: 20%;
+    max-width: 200px;
     min-width: 170px;
     flex-direction: column;
 `
@@ -38,7 +39,6 @@ export const ContainerButtonsNav = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-top: clamp(20px, 2vw, 40px);
 `
 
 export const StyledLink = styled(Link)`
@@ -46,11 +46,9 @@ export const StyledLink = styled(Link)`
     color: #fff;
     display: flex;
     align-items: center;
-    font-size: clamp(14px, 2vw, 28px);
-    gap: 24px;
-    padding-left: clamp(10px, 2vw, 30px);
-    padding-top: clamp(12px, 2vw, 24px);
-    padding-bottom: clamp(12px, 2vw, 24px);
+    padding: 12px;
+    font-size: 16px;
+    gap: 12px;
     transition: background-color 0.5s ease;
 
     ${({ active }) => active && `background-color: #181C2E;`}

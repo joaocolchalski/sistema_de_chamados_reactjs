@@ -7,7 +7,8 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
 `
 
 export const Form = styled.form`
@@ -21,6 +22,8 @@ export const Form = styled.form`
 
 export const LogoContainer = styled.div`
     width: 100%;
+    height: 100%;
+    max-height: 200px;
     background-color: #181c2e;
     display: flex;
     justify-content: center;
@@ -28,8 +31,10 @@ export const LogoContainer = styled.div`
 `
 
 export const LogoContainerImg = styled.img`
-    height: 71.5%;
-    max-height: 128px;
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    padding: 20px;
 `
 
 export const FormContainer = styled.div`
