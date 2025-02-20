@@ -19,6 +19,13 @@ export default function Clients() {
 
     const { handleAddClient } = useContext(AuthContext)
 
+    function addClient() {
+        handleAddClient(name, cnpj, address)
+        setName('')
+        setAddress('')
+        setCnpj('')
+    }
+
     return (
         <Screen>
             <Header />
@@ -52,7 +59,7 @@ export default function Clients() {
                     onChange={(e) => setAddress(e.target.value)}
                 />
 
-                <ButtonSave onClick={() => handleAddClient(name, cnpj, address)}>Salvar</ButtonSave>
+                <ButtonSave onClick={addClient}>Salvar</ButtonSave>
             </Container>
         </Screen>
     )

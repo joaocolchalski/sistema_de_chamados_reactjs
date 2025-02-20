@@ -171,7 +171,6 @@ export default function AuthProvider({ children }) {
         })
             .then(() => {
                 alert('Cliete cadastrado com sucesso!')
-                navigate('/home', { replace: true })
             })
             .catch((err) => {
                 alert('Erro ao cadastrar o cliente!')
