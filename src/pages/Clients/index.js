@@ -1,4 +1,9 @@
 import { useContext, useState } from "react";
+import { LuPen } from "react-icons/lu";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebaseConnection";
+import { AuthContext } from "../../contexts/app";
+
 import Header from "../../components/Header"
 import {
     Screen,
@@ -9,21 +14,37 @@ import {
     ButtonSave
 } from "../Settings/style"
 
-import { LuPen } from "react-icons/lu";
-import { AuthContext } from "../../contexts/app";
-
 export default function Clients() {
     const [name, setName] = useState('')
     const [cnpj, setCnpj] = useState('')
     const [address, setAddress] = useState('')
 
-    const { handleAddClient } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
-    function addClient() {
-        handleAddClient(name, cnpj, address)
-        setName('')
-        setAddress('')
-        setCnpj('')
+    async function handleAddClient(name, cnpj, address) {
+        if (name.trim().length === 0 || cnpj.trim().length === 0 || address.trim().length === 0) {
+            alert('Preencha todos os campos!')
+            return
+        }
+
+        const collectionRef = collection(db, 'clients')
+
+        await addDoc(collectionRef, {
+            name: name,
+            cnpj: cnpj,
+            address: address,
+            userUID: user.uid
+        })
+            .then(() => {
+                alert('Cliente cadastrado com sucesso!')
+                setName('')
+                setCnpj('')
+                setAddress('')
+            })
+            .catch((err) => {
+                alert('Erro ao cadastrar o cliente!')
+                console.log(err.code)
+            })
     }
 
     return (
@@ -59,7 +80,7 @@ export default function Clients() {
                     onChange={(e) => setAddress(e.target.value)}
                 />
 
-                <ButtonSave onClick={addClient}>Salvar</ButtonSave>
+                <ButtonSave onClick={() => handleAddClient(name, cnpj, address)}>Salvar</ButtonSave>
             </Container>
         </Screen>
     )

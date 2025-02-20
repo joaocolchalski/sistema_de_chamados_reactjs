@@ -18,7 +18,7 @@ import { LuSettings, LuUpload } from "react-icons/lu";
 import { AuthContext } from "../../contexts/app";
 
 export default function Settings() {
-    const { user, handleSignOut, handleUpdateName, handleFileChange, progressUpload, profilePhotoURL } = useContext(AuthContext)
+    const { user, handleSignOut, handleUpdateName, handleUpdatePhotoUser, progressUpload, profilePhotoURL } = useContext(AuthContext)
 
     const [name, setName] = useState(user.name)
 
@@ -39,7 +39,7 @@ export default function Settings() {
                     id="file-upload"
                     type="file"
                     accept="image/*"
-                    onChange={handleFileChange}
+                    onChange={handleUpdatePhotoUser}
                     style={{ display: 'none' }}
                 />
 

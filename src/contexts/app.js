@@ -1,12 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
-import { auth, db, storage } from "../firebaseConnection";
+import { auth, storage } from "../firebaseConnection";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import {
-    addDoc,
-    collection,
-    doc,
-} from "firebase/firestore";
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export const AuthContext = createContext({})
@@ -118,6 +113,7 @@ export default function AuthProvider({ children }) {
     }
 
     function handleUpdateName(name) {
+
         updateProfile(auth.currentUser, {
             displayName: name
         })
@@ -126,7 +122,7 @@ export default function AuthProvider({ children }) {
             })
     }
 
-    function handleFileChange(event) {
+    function handleUpdatePhotoUser(event) {
         const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
         if (file) {
             const storageRef = ref(storage, `users/${user.uid}`)
@@ -155,29 +151,6 @@ export default function AuthProvider({ children }) {
         }
     };
 
-    async function handleAddClient(name, cnpj, address) {
-        if (name.trim().length === 0 || cnpj.trim().length === 0 || address.trim().length === 0) {
-            alert('Preencha todos os campos!')
-            return
-        }
-
-        const collectionRef = collection(db, 'clients')
-
-        await addDoc(collectionRef, {
-            name: name,
-            cnpj: cnpj,
-            address: address,
-            userUID: user.uid
-        })
-            .then(() => {
-                alert('Cliete cadastrado com sucesso!')
-            })
-            .catch((err) => {
-                alert('Erro ao cadastrar o cliente!')
-                console.log(err.code)
-            })
-    }
-
     return (
         <AuthContext.Provider
             value={{
@@ -185,8 +158,7 @@ export default function AuthProvider({ children }) {
                 handleSignUp,
                 handleSignOut,
                 handleUpdateName,
-                handleFileChange,
-                handleAddClient,
+                handleUpdatePhotoUser,
                 signed,
                 loading,
                 user,
