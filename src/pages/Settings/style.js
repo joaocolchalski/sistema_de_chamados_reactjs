@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const Screen = styled.div`
     display: flex;
-    width: 100%;
-    min-height: 100vh;
+    width: max-content;
+    min-width: 100vw;
     height: auto;
+    min-height: 100vh;
 `
 
 export const Container = styled.div`
