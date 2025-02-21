@@ -6,6 +6,7 @@ import { getDocs, query, where, orderBy, collection, onSnapshot } from "firebase
 import { db } from "../../firebaseConnection";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../../components/Header"
 import {
@@ -33,6 +34,8 @@ export default function Home() {
     const [calleds, setCalleds] = useState([])
 
     const { user } = useContext(AuthContext)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function loadCalleds() {
@@ -71,7 +74,7 @@ export default function Home() {
 
                 {calleds.length > 0 ? (
                     <CalledsContainer>
-                        <ButtonNewCalled style={{ alignSelf: 'flex-end' }}>
+                        <ButtonNewCalled onClick={() => navigate('/new')} style={{ alignSelf: 'flex-end' }}>
                             <IoAdd /> Novo chamado
                         </ButtonNewCalled>
 
@@ -147,7 +150,7 @@ export default function Home() {
                 ) : (
                     <WithoutCalledsContainer>
                         <Text>Nenhum chamado registrado...</Text>
-                        <ButtonNewCalled>
+                        <ButtonNewCalled onClick={() => navigate('/new')}>
                             <IoAdd /> Novo chamado
                         </ButtonNewCalled>
                     </WithoutCalledsContainer>

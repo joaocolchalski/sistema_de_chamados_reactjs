@@ -15,7 +15,7 @@ export default function AppRoutes() {
             <Route path="/" element={<PrivateAuth><SignIn /></PrivateAuth>} />
             <Route path="/signup" element={<PrivateAuth><SignUp /></PrivateAuth>} />
             <Route path="/home" element={<PrivateHome><Home /></PrivateHome>} />
-            <Route path="/new" element={<PrivateHome><New /></PrivateHome>} />
+            <Route path="/new/:id?" element={<PrivateHome><New /></PrivateHome>} />
             <Route path="/settings" element={<PrivateHome><Settings /></PrivateHome>} />
             <Route path="/clients" element={<PrivateHome><Clients /></PrivateHome>} />
         </Routes>
