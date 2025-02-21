@@ -2,13 +2,14 @@ import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../contexts/app"
 import { LuMessageCircle, LuPen } from "react-icons/lu";
 import { IoAdd, IoClose, IoSearch } from "react-icons/io5";
-import { getDocs, query, where, orderBy, collection, onSnapshot } from "firebase/firestore";
+import { getDocs, query, where, orderBy, collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebaseConnection";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../../components/Header"
+import SpinnerLoading from "../../components/Spinner";
 import {
     Screen,
     Container,
@@ -29,9 +30,12 @@ import {
     Buttons,
     Button
 } from "./style";
+import Modal from "../../components/Modal";
 
 export default function Home() {
     const [calleds, setCalleds] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [modalOpen, setModalOpen] = useState(false);
 
     const { user } = useContext(AuthContext)
 
@@ -57,11 +61,25 @@ export default function Home() {
                 })
 
                 setCalleds(listCalleds)
+                setLoading(false)
             })
         }
 
         loadCalleds()
     }, [])
+
+    async function handleDeleteCalled(id) {
+        const docRef = doc(db, 'calleds', id)
+        await deleteDoc(docRef)
+    }
+
+
+
+    if (loading) {
+        return (
+            <SpinnerLoading />
+        )
+    }
 
     return (
         <Screen>
@@ -101,8 +119,8 @@ export default function Home() {
                                         Cadastrado em
                                     </TableHeader>
 
-                                    <TableHeader>
-
+                                    <TableHeader style={{ textAlign: 'center' }}>
+                                        #
                                     </TableHeader>
                                 </TableRow>
                                 {calleds.map((called) => (
@@ -129,19 +147,20 @@ export default function Home() {
 
                                         <TableData>
                                             <Buttons>
-                                                <Button backColor={'#3583F6'}>
+                                                <Button onClick={() => setModalOpen(true)} backColor={'#3583F6'}>
                                                     <IoSearch />
                                                 </Button>
 
-                                                <Button backColor={'#F6A935'}>
+                                                <Button onClick={() => navigate(`/new/${called.id}`)} backColor={'#F6A935'}>
                                                     <LuPen />
                                                 </Button>
 
-                                                <Button backColor={'#FD441B'}>
+                                                <Button onClick={() => handleDeleteCalled(called.id)} backColor={'#FD441B'}>
                                                     <IoClose />
                                                 </Button>
                                             </Buttons>
                                         </TableData>
+                                        <Modal called={called} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                                     </TableRow>
                                 ))}
                             </TableBody>
