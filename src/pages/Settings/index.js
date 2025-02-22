@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
+import { LuSettings, LuUpload } from "react-icons/lu";
+import { AuthContext } from "../../contexts/app";
+
 import Header from "../../components/Header"
-
-
 import {
     Screen,
     Container,
@@ -14,12 +15,8 @@ import {
     ButtonSignOut
 } from "./style"
 
-import { LuSettings, LuUpload } from "react-icons/lu";
-import { AuthContext } from "../../contexts/app";
-
 export default function Settings() {
     const { user, handleSignOut, handleUpdateName, handleUpdatePhotoUser, progressUpload, profilePhotoURL } = useContext(AuthContext)
-
     const [name, setName] = useState(user.name)
 
     return (

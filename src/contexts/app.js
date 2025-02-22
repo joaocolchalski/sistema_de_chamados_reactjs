@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { auth, storage } from "../firebaseConnection";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext({})
 
@@ -28,6 +29,7 @@ export default function AuthProvider({ children }) {
 
                     localStorage.setItem('@detailUser', JSON.stringify(userData))
 
+                    console.log(userData)
                     setProfilePhotoURL(user.photoURL)
                     setUser(userData)
                     setSigned(true)
@@ -46,22 +48,22 @@ export default function AuthProvider({ children }) {
 
     async function handleSignIn(email, password) {
         if (email.trim().length === 0 || password.trim().length === 0) {
-            alert('Preencha todos os campos!')
+            toast.warn('Preencha todos os campos!');
             return
         }
 
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 navigate('/home', { replace: true })
-                alert('Seja bem vindo de volta!')
+                toast.success('Seja bem vindo de volta!');
             })
             .catch((error) => {
                 if (error.code === 'auth/missing-password') {
-                    alert('A senha é obrigatória')
+                    toast.warn('A senha é obrigatória!')
                 } else if (error.code === 'auth/invalid-credential') {
-                    alert('Email incorreto ou senha incorreta!')
+                    toast.warn('Email incorreto ou senha incorreta!')
                 } else if (error.code === 'auth/invalid-email') {
-                    alert('O email é obrigatório')
+                    toast.warn('O email é obrigatório!')
                 } else {
                     console.log(error.code)
                 }
@@ -70,7 +72,7 @@ export default function AuthProvider({ children }) {
 
     async function handleSignUp(name, email, password) {
         if (name.trim().length === 0 || email.trim().length === 0 || password.trim().length === 0) {
-            alert('Preencha todos os campos!')
+            toast.warn('Preencha todos os campos!')
             return
         }
 
@@ -89,19 +91,19 @@ export default function AuthProvider({ children }) {
                 })
 
                 navigate('/home', { replace: true })
-                alert('Bem vindo a plataforma!')
+                toast.success('Bem vindo a plataforma!')
             })
             .catch((err) => {
                 if (err.code === 'auth/email-already-in-use') {
-                    alert('Email já em uso por outro usuário!')
+                    toast.warn('Email já em uso por outro usuário!')
                 } else if (err.code === 'auth/missing-email') {
-                    alert('O email é obrigatório')
+                    toast.warn('O email é obrigatório1')
                 } else if (err.code === 'auth/invalid-email') {
-                    alert('E-mail Inválido')
+                    toast.warn('Email inválido!')
                 } else if (err.code === 'auth/missing-password') {
-                    alert('A senha é obrigatória')
+                    toast.warn('A senha é obrigatória!')
                 } else if (err.code === 'auth/weak-password') {
-                    alert('A senha precisa ter no mínimo 6 caracteres')
+                    toast.warn('A senha precisa ter no mínimo 6 caracteres!')
                 } else {
                     console.log(err.code)
                 }
@@ -113,12 +115,17 @@ export default function AuthProvider({ children }) {
     }
 
     function handleUpdateName(name) {
+        if (name.trim().length === 0) {
+            toast.warn('Preencha o campo nome!')
+            return
+        }
 
         updateProfile(auth.currentUser, {
             displayName: name
         })
             .then(() => {
-                alert('Nome atualizado com sucesso!')
+                user.name = name
+                toast.success('Nome atualizado com sucesso!')
             })
     }
 
@@ -135,7 +142,7 @@ export default function AuthProvider({ children }) {
                     setProgressUpload(progress)
                 },
                 (err) => {
-                    alert('Erro ao fazer upload da foto!')
+                    toast.error('Erro ao fazer upload da foto!')
                     console.log(err)
                     setProgressUpload(0)
                 },
@@ -146,6 +153,7 @@ export default function AuthProvider({ children }) {
                     })
                     setProfilePhotoURL(url)
                     setProgressUpload(0)
+                    toast.success('Foto atualizada com sucesso!')
                 }
             )
         }

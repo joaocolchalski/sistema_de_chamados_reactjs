@@ -3,6 +3,7 @@ import { LuPen } from "react-icons/lu";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebaseConnection";
 import { AuthContext } from "../../contexts/app";
+import { toast } from "react-toastify";
 
 import Header from "../../components/Header"
 import {
@@ -23,7 +24,7 @@ export default function Clients() {
 
     async function handleAddClient(name, cnpj, address) {
         if (name.trim().length === 0 || cnpj.trim().length === 0 || address.trim().length === 0) {
-            alert('Preencha todos os campos!')
+            toast.warn('Preencha todos os campos!')
             return
         }
 
@@ -36,13 +37,13 @@ export default function Clients() {
             userUID: user.uid
         })
             .then(() => {
-                alert('Cliente cadastrado com sucesso!')
+                toast.success('Cliente cadastrado com sucesso!')
                 setName('')
                 setCnpj('')
                 setAddress('')
             })
             .catch((err) => {
-                alert('Erro ao cadastrar o cliente!')
+                toast.error('Erro ao cadastrar o cliente!')
                 console.log(err.code)
             })
     }

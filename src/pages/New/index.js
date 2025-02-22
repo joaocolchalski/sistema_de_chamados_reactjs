@@ -2,9 +2,10 @@ import { IoAdd } from "react-icons/io5"
 import { LuPen } from "react-icons/lu"
 import { useNavigate, useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
+import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { db } from "../../firebaseConnection"
 import { AuthContext } from "../../contexts/app"
+import { toast } from "react-toastify"
 
 import Header from "../../components/Header"
 import SpinnerLoading from "../../components/Spinner"
@@ -59,16 +60,14 @@ export default function New() {
                     setLoading(false)
                 })
                 .catch((err) => {
-                    alert('Erro ao carregar a lista de clientes!')
+                    toast.error('Erro ao carregar a lista de clientes!')
                     console.log(err.code)
                     setLoading(false)
                 })
-
-
         }
 
         loadClients()
-    }, [])
+    }, [user.uid])
 
     useEffect(() => {
         if (id) {
@@ -84,7 +83,7 @@ export default function New() {
                         setLoading(false)
                     })
                     .catch((err) => {
-                        alert('Erro ao carregar o chamado!')
+                        toast.error('Erro ao carregar o chamado!')
                         console.log(err.code)
                         setLoading(false)
                     })
@@ -92,11 +91,11 @@ export default function New() {
 
             loadCalled()
         }
-    }, [])
+    }, [id])
 
     async function handleAddCalled() {
         if (clientSelect === '' || subjectSelect === '' || statusSelected === '') {
-            alert('Selecione todas as opções!')
+            toast.warn('Selecione todas as opções!')
             return
         }
 
@@ -111,21 +110,21 @@ export default function New() {
             userUID: user.uid
         })
             .then(() => {
-                alert('Chamado criado com sucesso!')
+                toast.success('Chamado criado com sucesso!')
                 setClientSelect('')
                 setSubjectSelect('')
                 setStatusSelected('')
                 setComplement('')
             })
             .catch((err) => {
-                alert('Erro ao criar o chamado!')
+                toast.error('Erro ao criar o chamado!')
                 console.log(err)
             })
     }
 
     async function handleEditCalled() {
         if (clientSelect === '' || subjectSelect === '' || statusSelected === '') {
-            alert('Selecione todas as opções!')
+            toast.warn('Selecione todas as opções!')
             return
         }
 
@@ -138,7 +137,7 @@ export default function New() {
             subject: subjectSelect
         })
             .then(() => {
-                alert('Chamado editado com sucesso!')
+                toast.success('Chamado editado com sucesso!')
                 setClientSelect('')
                 setSubjectSelect('')
                 setStatusSelected('')
@@ -146,7 +145,7 @@ export default function New() {
                 navigate('/home')
             })
             .catch((err) => {
-                alert('Erro ao editar o chamado!')
+                toast.error('Erro ao editar o chamado!')
                 console.log(err)
             })
     }

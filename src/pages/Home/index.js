@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../contexts/app"
 import { LuMessageCircle, LuPen } from "react-icons/lu";
 import { IoAdd, IoClose, IoSearch } from "react-icons/io5";
-import { getDocs, query, where, orderBy, collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { query, where, orderBy, collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebaseConnection";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Header from "../../components/Header"
 import SpinnerLoading from "../../components/Spinner";
@@ -15,7 +16,6 @@ import {
     Container,
     Title
 } from "../Settings/style";
-
 import {
     WithoutCalledsContainer,
     Text,
@@ -67,14 +67,19 @@ export default function Home() {
         }
 
         loadCalleds()
-    }, [])
+    }, [user.uid])
 
     async function handleDeleteCalled(id) {
         const docRef = doc(db, 'calleds', id)
         await deleteDoc(docRef)
+            .then(() => {
+                toast.success('Chamado deletado com sucesso!')
+            })
+            .catch((err) => {
+                toast.error('Erro ao deletar o chamado!')
+                console.log(err.code)
+            })
     }
-
-
 
     if (loading) {
         return (
