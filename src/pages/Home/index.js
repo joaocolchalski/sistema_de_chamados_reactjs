@@ -36,6 +36,7 @@ export default function Home() {
     const [calleds, setCalleds] = useState([])
     const [loading, setLoading] = useState(true)
     const [modalOpen, setModalOpen] = useState(false);
+    const [calledModal, setCalledModal] = useState({})
 
     const { user } = useContext(AuthContext)
 
@@ -147,7 +148,13 @@ export default function Home() {
 
                                         <TableData>
                                             <Buttons>
-                                                <Button onClick={() => setModalOpen(true)} backColor={'#3583F6'}>
+                                                <Button onClick={
+                                                    () => {
+                                                        setModalOpen(true)
+                                                        setCalledModal(called)
+                                                    }}
+                                                    backColor={'#3583F6'}
+                                                >
                                                     <IoSearch />
                                                 </Button>
 
@@ -160,7 +167,7 @@ export default function Home() {
                                                 </Button>
                                             </Buttons>
                                         </TableData>
-                                        <Modal called={called} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+                                        <Modal called={calledModal} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                                     </TableRow>
                                 ))}
                             </TableBody>
