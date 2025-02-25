@@ -1,18 +1,18 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "../../contexts/app"
-
+import logo from '../../assets/logo-maior.png'
 import {
-    Container,
+    ContainerCenter,
+    Login,
+    LogoArea,
+    LogoImg,
     Form,
-    LogoContainer,
-    LogoContainerImg,
-    FormContainer,
-    FormContainerInput,
-    FormContainerButton,
+    FormInput,
+    FormButton,
     StyledLink
 } from "./style"
 
-export default function SignUp() {
+export default function SignIn() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -25,38 +25,39 @@ export default function SignUp() {
     }
 
     return (
-        <Container>
-            <Form onSubmit={SignUp}>
-                <LogoContainer className="logo-container">
-                    <LogoContainerImg src={require("../../assets/logo-maior.png")} alt="Logo da Empresa" />
-                </LogoContainer>
+        <ContainerCenter>
+            <Login>
+                <LogoArea>
+                    <LogoImg src={logo} alt="Logo da Empresa" />
+                </LogoArea>
 
-                <FormContainer className="form-container">
-                    <FormContainerInput
+                <Form onSubmit={SignUp}>
+                    <FormInput
                         type="text"
                         placeholder="Nome"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
 
-                    <FormContainerInput
+                    <FormInput
                         type="email"
                         placeholder="E-mail"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
-                    <FormContainerInput
+                    <FormInput
                         type="password"
                         placeholder="Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <FormContainerButton type="submit">Cadastrar</FormContainerButton>
-                    <StyledLink to={'/'}>Já possuo uma conta</StyledLink>
-                </FormContainer>
-            </Form>
-        </Container>
+                    <FormButton type="submit">Cadastrar</FormButton>
+                </Form>
+
+                <StyledLink to={'/'}>Já possuo uma conta</StyledLink>
+            </Login>
+        </ContainerCenter>
     )
 }

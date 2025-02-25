@@ -1,13 +1,14 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "../../contexts/app"
+import logo from '../../assets/logo-maior.png'
 import {
-    Container,
+    ContainerCenter,
+    Login,
+    LogoArea,
+    LogoImg,
     Form,
-    LogoContainer,
-    LogoContainerImg,
-    FormContainer,
-    FormContainerInput,
-    FormContainerButton,
+    FormInput,
+    FormButton,
     StyledLink
 } from "../SignUp/style"
 
@@ -23,31 +24,32 @@ export default function SignIn() {
     }
 
     return (
-        <Container>
-            <Form onSubmit={SignIn}>
-                <LogoContainer >
-                    <LogoContainerImg src={require("../../assets/logo-maior.png")} alt="Logo da Empresa" />
-                </LogoContainer>
+        <ContainerCenter>
+            <Login>
+                <LogoArea>
+                    <LogoImg src={logo} alt="Logo da Empresa" />
+                </LogoArea>
 
-                <FormContainer>
-                    <FormContainerInput
+                <Form onSubmit={SignIn}>
+                    <FormInput
                         type="email"
                         placeholder="E-mail"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
-                    <FormContainerInput
+                    <FormInput
                         type="password"
                         placeholder="Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <FormContainerButton type="submit">Acessar</FormContainerButton>
-                    <StyledLink to={'/signup'}>Criar uma conta</StyledLink>
-                </FormContainer>
-            </Form>
-        </Container>
+                    <FormButton type="submit">Acessar</FormButton>
+                </Form>
+
+                <StyledLink to={'/signup'}>Criar uma conta</StyledLink>
+            </Login>
+        </ContainerCenter>
     )
 }

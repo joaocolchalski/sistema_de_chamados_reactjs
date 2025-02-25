@@ -17,8 +17,8 @@ export default function AuthProvider({ children }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        function checkLogin() {
-            onAuthStateChanged(auth, async (user) => {
+        async function checkLogin() {
+            onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const userData = {
                         uid: user.uid,
@@ -29,7 +29,6 @@ export default function AuthProvider({ children }) {
 
                     localStorage.setItem('@detailUser', JSON.stringify(userData))
 
-                    console.log(userData)
                     setProfilePhotoURL(user.photoURL)
                     setUser(userData)
                     setSigned(true)
@@ -79,7 +78,7 @@ export default function AuthProvider({ children }) {
         await createUserWithEmailAndPassword(auth, email, password)
             .then((value) => {
                 const userData = {
-                    uid: value.user.ui,
+                    uid: value.user.uid,
                     email: email,
                     name: name,
                     photoURL: value.user.photoURL

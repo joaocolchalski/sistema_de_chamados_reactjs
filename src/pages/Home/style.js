@@ -20,12 +20,8 @@ export const ButtonNewCalled = styled.button`
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    height: 100%;
-    max-height: 40px;
-    min-height: 32px;
-    width: 100%;
-    max-width: 180px;
-    min-width: 80px;
+    height: 40px;
+    width: 180px;
     border: 0;
     background-color: #83BF02;
     color: #fff;
@@ -85,7 +81,6 @@ export const Buttons = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     gap: 5px;
 `
 

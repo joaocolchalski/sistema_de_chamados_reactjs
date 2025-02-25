@@ -46,7 +46,7 @@ export default function Home() {
         async function loadCalleds() {
             const collectionRef = collection(db, 'calleds')
 
-            const q = query(collectionRef, orderBy('createdAt', 'desc'), where('userUID', '==', user.uid))
+            const q = query(collectionRef, orderBy('createdAt', 'desc'), where('userUID', '==', user?.uid))
 
             onSnapshot(q, (calleds) => {
                 let listCalleds = []
@@ -67,7 +67,7 @@ export default function Home() {
         }
 
         loadCalleds()
-    }, [user.uid])
+    }, [user?.uid])
 
     async function handleDeleteCalled(id) {
         const docRef = doc(db, 'calleds', id)
