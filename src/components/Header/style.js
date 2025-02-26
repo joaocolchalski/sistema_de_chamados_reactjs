@@ -35,7 +35,7 @@ export const ImgUser = styled.label`
     min-height: 100px;
     border-radius: 50%;
     border: 0;
-    background-image: url(${({ photoURL }) => photoURL});
+    background-image: url(${({ $photoURL }) => $photoURL});
     background-size: cover;
     background-color: #000;
     margin: 20px;
@@ -57,7 +57,7 @@ export const StyledLink = styled(Link)`
     gap: 12px;
     transition: background-color 0.5s ease;
 
-    ${({ active }) => active && `background-color: #181C2E;`}
+    ${({ $active }) => $active && `background-color: #181C2E;`}
 
     &:hover{
         background-color: #181C2E;

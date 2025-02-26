@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { AuthContext } from "../contexts/app";
+import { AppContext } from "../contexts/app";
 import { Navigate } from "react-router-dom";
 
-export default function PrivateHome({ children }) {
-    const { signed, loading } = useContext(AuthContext)
+export default function PrivateDashboard({ children }) {
+    const { signed, loading } = useContext(AppContext)
 
     if (loading) {
         return (

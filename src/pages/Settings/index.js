@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { LuSettings, LuUpload } from "react-icons/lu";
-import { AuthContext } from "../../contexts/app";
+import { AppContext } from "../../contexts/app";
 
 import Header from "../../components/Header"
 import {
@@ -16,7 +16,7 @@ import {
 } from "./style"
 
 export default function Settings() {
-    const { user, handleSignOut, handleUpdateName, handleUpdatePhotoUser, progressUpload, profilePhotoURL } = useContext(AuthContext)
+    const { user, handleSignOut, handleUpdateName, handleUpdatePhotoUser, progressUpload, profilePhotoURL } = useContext(AppContext)
     const [name, setName] = useState(user.name)
 
     return (
@@ -28,7 +28,7 @@ export default function Settings() {
                     <LuSettings /> Minha Conta
                 </Title>
 
-                <LabelUploadPhotoSettings htmlFor="file-upload" photoURL={profilePhotoURL ? `${profilePhotoURL}` : require('../../assets/user.png')}>
+                <LabelUploadPhotoSettings htmlFor="file-upload" $photoURL={profilePhotoURL ? `${profilePhotoURL}` : require('../../assets/user.png')}>
                     {progressUpload > 0 && progressUpload < 100 ? `${progressUpload.toFixed(0)}%` : <LuUpload />}
                 </LabelUploadPhotoSettings>
 

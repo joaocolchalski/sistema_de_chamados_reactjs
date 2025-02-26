@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { AuthContext } from "../../contexts/app"
+import { AppContext } from "../../contexts/app"
 import logo from '../../assets/logo-maior.png'
 import {
     ContainerCenter,
@@ -17,7 +17,7 @@ export default function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { handleSignUp } = useContext(AuthContext)
+    const { handleSignUp, loadingAuth } = useContext(AppContext)
 
     function SignUp(e) {
         e.preventDefault()
@@ -53,7 +53,7 @@ export default function SignIn() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <FormButton type="submit">Cadastrar</FormButton>
+                    <FormButton type="submit">{loadingAuth ? 'Carregando...' : 'Cadastrar'}</FormButton>
                 </Form>
 
                 <StyledLink to={'/'}>Já possuo uma conta</StyledLink>

@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { LuPen } from "react-icons/lu";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebaseConnection";
-import { AuthContext } from "../../contexts/app";
+import { AppContext } from "../../contexts/app";
 import { toast } from "react-toastify";
 
 import Header from "../../components/Header"
@@ -20,7 +20,7 @@ export default function Clients() {
     const [cnpj, setCnpj] = useState('')
     const [address, setAddress] = useState('')
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AppContext)
 
     async function handleAddClient(name, cnpj, address) {
         if (name.trim().length === 0 || cnpj.trim().length === 0 || address.trim().length === 0) {

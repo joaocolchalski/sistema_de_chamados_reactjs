@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../../contexts/app"
+import { AppContext } from "../../contexts/app"
 import { LuMessageCircle, LuPen } from "react-icons/lu";
 import { IoAdd, IoClose, IoSearch } from "react-icons/io5";
 import { query, where, orderBy, collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
@@ -32,13 +32,13 @@ import {
 } from "./style";
 import Modal from "../../components/Modal";
 
-export default function Home() {
+export default function Dashboard() {
     const [calleds, setCalleds] = useState([])
     const [loading, setLoading] = useState(true)
     const [modalOpen, setModalOpen] = useState(false);
     const [calledModal, setCalledModal] = useState({})
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AppContext)
 
     const navigate = useNavigate()
 
@@ -144,7 +144,7 @@ export default function Home() {
                                         </TableData>
 
                                         <TableData>
-                                            <LabelStatus calledStatus={called.status}>{called.status}</LabelStatus>
+                                            <LabelStatus $calledStatus={called.status}>{called.status}</LabelStatus>
                                         </TableData>
 
                                         <TableData>
@@ -158,16 +158,16 @@ export default function Home() {
                                                         setModalOpen(true)
                                                         setCalledModal(called)
                                                     }}
-                                                    backColor={'#3583F6'}
+                                                    $backColor={'#3583F6'}
                                                 >
                                                     <IoSearch />
                                                 </Button>
 
-                                                <Button onClick={() => navigate(`/new/${called.id}`)} backColor={'#F6A935'}>
+                                                <Button onClick={() => navigate(`/new/${called.id}`)} $backColor={'#F6A935'}>
                                                     <LuPen />
                                                 </Button>
 
-                                                <Button onClick={() => handleDeleteCalled(called.id)} backColor={'#FD441B'}>
+                                                <Button onClick={() => handleDeleteCalled(called.id)} $backColor={'#FD441B'}>
                                                     <IoClose />
                                                 </Button>
                                             </Buttons>

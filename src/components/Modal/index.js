@@ -16,7 +16,7 @@ import {
 
 import {
     LabelStatus
-} from '../../pages/Home/style';
+} from '../../pages/Dashboard/style';
 
 export default function Modal({ isOpen, onClose, called }) {
     if (!isOpen) return null;

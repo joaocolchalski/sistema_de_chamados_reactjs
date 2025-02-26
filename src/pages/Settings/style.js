@@ -40,7 +40,7 @@ export const LabelUploadPhotoSettings = styled.label`
     max-height: 100px;
     min-height: 100px;
     border-radius: 50%;
-    background-image: url(${({ photoURL }) => photoURL});
+    background-image: url(${({ $photoURL }) => $photoURL});
     background-size: cover;
     background-color: #000;
     border: 0;

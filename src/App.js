@@ -1,12 +1,12 @@
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes";
-import AuthProvider from "./contexts/app";
+import AppProvider from "./contexts/app";
 import { ToastContainer, Bounce } from "react-toastify";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
+      <AppProvider>
         <ToastContainer
           position="top-right"
           autoClose={3000}
@@ -21,7 +21,7 @@ export default function App() {
           transition={Bounce}
         />
         <AppRoutes />
-      </AuthProvider>
+      </AppProvider>
     </BrowserRouter>
   );
 }

@@ -5,19 +5,17 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 
-export const AuthContext = createContext({})
+export const AppContext = createContext({})
 
-export default function AuthProvider({ children }) {
-    const [user, setUser] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [signed, setSigned] = useState(false)
+export default function AppProvider({ children }) {
+    const [user, setUser] = useState(null)
     const [progressUpload, setProgressUpload] = useState(0);
     const [profilePhotoURL, setProfilePhotoURL] = useState('')
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        async function checkLogin() {
+        function checkLogin() {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const userData = {
@@ -27,17 +25,10 @@ export default function AuthProvider({ children }) {
                         photoURL: user.photoURL
                     }
 
-                    localStorage.setItem('@detailUser', JSON.stringify(userData))
-
                     setProfilePhotoURL(user.photoURL)
                     setUser(userData)
-                    setSigned(true)
-                    setLoading(false)
                 } else {
-                    localStorage.removeItem('@detailUser')
-                    setLoading(false)
-                    setSigned(false)
-                    setUser({})
+                    setUser(null)
                 }
             })
         }
@@ -53,7 +44,7 @@ export default function AuthProvider({ children }) {
 
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                navigate('/home', { replace: true })
+                navigate('/dashboard', { replace: true })
                 toast.success('Seja bem vindo de volta!');
             })
             .catch((error) => {
@@ -89,7 +80,7 @@ export default function AuthProvider({ children }) {
                     displayName: name
                 })
 
-                navigate('/home', { replace: true })
+                navigate('/dashboard', { replace: true })
                 toast.success('Bem vindo a plataforma!')
             })
             .catch((err) => {
@@ -159,20 +150,19 @@ export default function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider
+        <AppContext.Provider
             value={{
                 handleSignIn,
                 handleSignUp,
                 handleSignOut,
                 handleUpdateName,
                 handleUpdatePhotoUser,
-                signed,
-                loading,
+                signed: !!user,
                 user,
                 progressUpload,
                 profilePhotoURL
             }}>
             {children}
-        </AuthContext.Provider>
+        </AppContext.Provider>
     )
 }

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { AuthContext } from "../../contexts/app"
+import { AppContext } from "../../contexts/app"
 import logo from '../../assets/logo-maior.png'
 import {
     ContainerCenter,
@@ -16,7 +16,7 @@ export default function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { handleSignIn } = useContext(AuthContext)
+    const { handleSignIn } = useContext(AppContext)
 
     function SignIn(e) {
         e.preventDefault()

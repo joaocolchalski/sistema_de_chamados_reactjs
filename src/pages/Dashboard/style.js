@@ -64,15 +64,15 @@ export const LabelStatus = styled.label`
     padding: 3px;
     border-radius: 5px;
     
-    ${({ calledStatus }) => calledStatus === 'Em Aberto' && `
+    ${({ $calledStatus }) => $calledStatus === 'Em Aberto' && `
         background-color: #FD441B;
     `}
 
-    ${({ calledStatus }) => calledStatus === 'Em Progresso' && `
+    ${({ $calledStatus }) => $calledStatus === 'Em Progresso' && `
         background-color: #F6A935;
     `}
 
-    ${({ calledStatus }) => calledStatus === 'Atendido' && `
+    ${({ $calledStatus }) => $calledStatus === 'Atendido' && `
         background-color: #5CB85C;
     `}
 `
@@ -89,7 +89,7 @@ export const Button = styled.button`
     justify-content: center;
     align-items: center;
     border: 0;
-    background-color: ${({ backColor }) => backColor};
+    background-color: ${({ $backColor }) => $backColor};
     color: #fff;
     font-size: 18px;
     padding: 3px 5px;

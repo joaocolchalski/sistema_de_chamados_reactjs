@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { db } from "../../firebaseConnection"
-import { AuthContext } from "../../contexts/app"
+import { AppContext } from "../../contexts/app"
 import { toast } from "react-toastify"
 
 import Header from "../../components/Header"
@@ -38,7 +38,7 @@ export default function New() {
 
     const { id } = useParams()
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AppContext)
 
     const navigate = useNavigate()
 
@@ -142,7 +142,7 @@ export default function New() {
                 setSubjectSelect('')
                 setStatusSelected('')
                 setComplement('')
-                navigate('/home')
+                navigate('/dashboard')
             })
             .catch((err) => {
                 toast.error('Erro ao editar o chamado!')

@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { AuthContext } from "../contexts/app";
+import { AppContext } from "../contexts/app";
 import { Navigate } from "react-router-dom";
 
 export default function PrivateAuth({ children }) {
-    const { signed, loading } = useContext(AuthContext)
+    const { signed, loading } = useContext(AppContext)
 
     if (loading) {
         return (
@@ -12,7 +12,7 @@ export default function PrivateAuth({ children }) {
     }
 
     if (signed) {
-        return <Navigate to={'/home'} />
+        return <Navigate to={'/dashboard'} />
     }
 
     return children
