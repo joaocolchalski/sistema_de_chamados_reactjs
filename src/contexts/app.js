@@ -10,6 +10,8 @@ export const AppContext = createContext({})
 export default function AppProvider({ children }) {
     const [user, setUser] = useState(null)
     const [progressUpload, setProgressUpload] = useState(0);
+    const [loadingAuth, setLoadingAuth] = useState(false)
+    const [loadingVerifySigned, setLoadingVerifySigned] = useState(true)
     const [profilePhotoURL, setProfilePhotoURL] = useState('')
 
     const navigate = useNavigate()
@@ -25,10 +27,12 @@ export default function AppProvider({ children }) {
                         photoURL: user.photoURL
                     }
 
-                    setProfilePhotoURL(user.photoURL)
+                    setProfilePhotoURL(userData.photoURL)
                     setUser(userData)
+                    setLoadingVerifySigned(false)
                 } else {
                     setUser(null)
+                    setLoadingVerifySigned(false)
                 }
             })
         }
@@ -42,10 +46,12 @@ export default function AppProvider({ children }) {
             return
         }
 
+        setLoadingAuth(true)
         await signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 navigate('/dashboard', { replace: true })
                 toast.success('Seja bem vindo de volta!');
+                setLoadingAuth(false)
             })
             .catch((error) => {
                 if (error.code === 'auth/missing-password') {
@@ -57,6 +63,7 @@ export default function AppProvider({ children }) {
                 } else {
                     console.log(error.code)
                 }
+                setLoadingAuth(false)
             })
     }
 
@@ -66,6 +73,7 @@ export default function AppProvider({ children }) {
             return
         }
 
+        setLoadingAuth(true)
         await createUserWithEmailAndPassword(auth, email, password)
             .then((value) => {
                 const userData = {
@@ -82,6 +90,7 @@ export default function AppProvider({ children }) {
 
                 navigate('/dashboard', { replace: true })
                 toast.success('Bem vindo a plataforma!')
+                setLoadingAuth(false)
             })
             .catch((err) => {
                 if (err.code === 'auth/email-already-in-use') {
@@ -97,6 +106,7 @@ export default function AppProvider({ children }) {
                 } else {
                     console.log(err.code)
                 }
+                setLoadingAuth(false)
             })
     }
 
@@ -116,6 +126,10 @@ export default function AppProvider({ children }) {
             .then(() => {
                 user.name = name
                 toast.success('Nome atualizado com sucesso!')
+            })
+            .catch((err) => {
+                toast.error('Erro ao atualizar o nome!')
+                console.log(err.code)
             })
     }
 
@@ -159,6 +173,8 @@ export default function AppProvider({ children }) {
                 handleUpdatePhotoUser,
                 signed: !!user,
                 user,
+                loadingAuth,
+                loadingVerifySigned,
                 progressUpload,
                 profilePhotoURL
             }}>

@@ -16,7 +16,7 @@ export default function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { handleSignIn } = useContext(AppContext)
+    const { handleSignIn, loadingAuth } = useContext(AppContext)
 
     function SignIn(e) {
         e.preventDefault()
@@ -45,7 +45,7 @@ export default function SignIn() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <FormButton type="submit">Acessar</FormButton>
+                    <FormButton type="submit">{loadingAuth ? 'Carregando...' : 'Acessar'}</FormButton>
                 </Form>
 
                 <StyledLink to={'/signup'}>Criar uma conta</StyledLink>

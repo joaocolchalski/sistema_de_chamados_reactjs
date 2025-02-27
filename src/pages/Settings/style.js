@@ -6,6 +6,10 @@ export const Screen = styled.div`
     min-width: 100vw;
     height: auto;
     min-height: 100vh;
+
+    @media(max-width: 700px){
+        flex-direction: column;
+    }
 `
 
 export const Container = styled.div`

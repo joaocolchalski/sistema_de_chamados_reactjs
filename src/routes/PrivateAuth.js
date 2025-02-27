@@ -1,13 +1,14 @@
 import { useContext } from "react";
 import { AppContext } from "../contexts/app";
 import { Navigate } from "react-router-dom";
+import SpinnerLoading from "../components/Spinner";
 
 export default function PrivateAuth({ children }) {
-    const { signed, loading } = useContext(AppContext)
+    const { signed, loadingVerifySigned } = useContext(AppContext)
 
-    if (loading) {
+    if (loadingVerifySigned) {
         return (
-            <div></div>
+            <SpinnerLoading />
         )
     }
 

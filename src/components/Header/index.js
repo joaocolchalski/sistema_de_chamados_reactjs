@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { AppContext } from '../../contexts/app';
 import { LuHouse, LuUsers, LuSettings } from "react-icons/lu";
 import { useLocation } from 'react-router-dom';
+import avatarIgm from '../../assets/user.png'
 
 import {
     Container,
     ContainerImgUser,
     ImgUser,
-    ContainerButtonsNav,
     StyledLink
 } from './style';
 
@@ -19,22 +19,20 @@ export default function Header() {
     return (
         <Container>
             <ContainerImgUser>
-                <ImgUser $photoURL={profilePhotoURL ? `${profilePhotoURL}` : require('../../assets/user.png')} alt='Imagem de Perfil do Usuário' />
+                <ImgUser src={profilePhotoURL ? profilePhotoURL : avatarIgm} alt='Imagem de Perfil do Usuário' />
             </ContainerImgUser>
 
-            <ContainerButtonsNav>
-                <StyledLink to={'/dashboard'} $active={location.pathname === '/dashboard' ? true : false}>
-                    <LuHouse /> Chamados
-                </StyledLink>
+            <StyledLink to={'/dashboard'} $active={location.pathname === '/dashboard' ? true : false}>
+                <LuHouse /> Chamados
+            </StyledLink>
 
-                <StyledLink to={'/clients'} $active={location.pathname === '/clients' ? true : false} >
-                    <LuUsers /> Clientes
-                </StyledLink>
+            <StyledLink to={'/clients'} $active={location.pathname === '/clients' ? true : false} >
+                <LuUsers /> Clientes
+            </StyledLink>
 
-                <StyledLink to={'/settings'} $active={location.pathname === '/settings' ? true : false}>
-                    <LuSettings /> Configurações
-                </StyledLink>
-            </ContainerButtonsNav>
+            <StyledLink to={'/settings'} $active={location.pathname === '/settings' ? true : false}>
+                <LuSettings /> Configurações
+            </StyledLink>
         </Container>
     );
 };
