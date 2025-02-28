@@ -3,10 +3,10 @@ import { LuSettings, LuUpload } from "react-icons/lu";
 import { AppContext } from "../../contexts/app";
 
 import Header from "../../components/Header"
+import Title from "../../components/Title";
 import {
     Screen,
     Container,
-    Title,
     InputUploadPhotoSetting,
     LabelUploadPhotoSettings,
     Label,
@@ -24,9 +24,7 @@ export default function Settings() {
             <Header />
 
             <Container>
-                <Title>
-                    <LuSettings /> Minha Conta
-                </Title>
+                <Title icon={<LuSettings />} title={'Minha Conta'} />
 
                 <LabelUploadPhotoSettings htmlFor="file-upload" $photoURL={profilePhotoURL ? `${profilePhotoURL}` : require('../../assets/user.png')}>
                     {progressUpload > 0 && progressUpload < 100 ? `${progressUpload.toFixed(0)}%` : <LuUpload />}

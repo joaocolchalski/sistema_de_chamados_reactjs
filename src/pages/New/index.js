@@ -8,11 +8,11 @@ import { AppContext } from "../../contexts/app"
 import { toast } from "react-toastify"
 
 import Header from "../../components/Header"
+import Title from "../../components/Title"
 import SpinnerLoading from "../../components/Spinner"
 import {
     Screen,
     Container,
-    Title,
     Label,
     ButtonSave
 } from "../Settings/style"
@@ -160,9 +160,7 @@ export default function New() {
         <Screen>
             <Header />
             <Container>
-                <Title>
-                    {id ? <LuPen /> : <IoAdd />}{id ? 'Editando Chamado' : 'Novo Chamado'}
-                </Title>
+                <Title icon={id ? <LuPen /> : <IoAdd />} title={id ? 'Editando Chamado' : 'Novo Chamado'} />
 
                 <Label>Cliente</Label>
                 <Select

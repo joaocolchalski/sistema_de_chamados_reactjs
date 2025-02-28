@@ -6,10 +6,10 @@ import { AppContext } from "../../contexts/app";
 import { toast } from "react-toastify";
 
 import Header from "../../components/Header"
+import Title from "../../components/Title";
 import {
     Screen,
     Container,
-    Title,
     Label,
     Input,
     ButtonSave
@@ -53,9 +53,7 @@ export default function Clients() {
             <Header />
 
             <Container>
-                <Title>
-                    <LuPen /> Novo Cliente
-                </Title>
+                <Title icon={<LuPen />} title={'Novo Cliente'} />
 
                 <Label>Nome do Cliente</Label>
                 <Input

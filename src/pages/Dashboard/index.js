@@ -10,17 +10,16 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import Header from "../../components/Header"
+import Title from "../../components/Title";
 import SpinnerLoading from "../../components/Spinner";
 import {
     Screen,
-    Container,
-    Title
+    Container
 } from "../Settings/style";
 import {
     WithoutCalledsContainer,
     Text,
     ButtonNewCalled,
-    CalledsContainer,
     TableContainer,
     TableBody,
     TableRow,
@@ -28,7 +27,8 @@ import {
     TableData,
     LabelStatus,
     Buttons,
-    Button
+    Button,
+    TableHead
 } from "./style";
 import Modal from "../../components/Modal";
 
@@ -92,43 +92,43 @@ export default function Dashboard() {
             <Header />
 
             <Container>
-                <Title>
-                    <LuMessageCircle /> Atendimentos
-                </Title>
+                <Title icon={<LuMessageCircle />} title={'Atendimentos'} />
 
                 {calleds.length > 0 ? (
-                    <CalledsContainer>
+                    <>
                         <ButtonNewCalled onClick={() => navigate('/new')} style={{ alignSelf: 'flex-end' }}>
                             <IoAdd /> Novo chamado
                         </ButtonNewCalled>
 
                         <TableContainer>
-                            <TableBody>
+                            <TableHead>
                                 <TableRow>
-                                    <TableHeader>
+                                    <TableHeader scope="col">
                                         Código
                                     </TableHeader>
 
-                                    <TableHeader>
+                                    <TableHeader scope="col">
                                         Cliente
                                     </TableHeader>
 
-                                    <TableHeader>
+                                    <TableHeader scope="col">
                                         Assunto
                                     </TableHeader>
 
-                                    <TableHeader>
+                                    <TableHeader scope="col">
                                         Status
                                     </TableHeader>
 
-                                    <TableHeader>
+                                    <TableHeader scope="col">
                                         Cadastrado em
                                     </TableHeader>
 
-                                    <TableHeader style={{ textAlign: 'center' }}>
+                                    <TableHeader scope="col">
                                         #
                                     </TableHeader>
                                 </TableRow>
+                            </TableHead>
+                            <TableBody>
                                 {calleds.map((called) => (
                                     <TableRow key={called.id}>
                                         <TableData>
@@ -177,7 +177,7 @@ export default function Dashboard() {
                                 ))}
                             </TableBody>
                         </TableContainer>
-                    </CalledsContainer>
+                    </>
                 ) : (
                     <WithoutCalledsContainer>
                         <Text>Nenhum chamado registrado...</Text>

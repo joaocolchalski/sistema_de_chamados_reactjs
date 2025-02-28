@@ -70,12 +70,3 @@ export const StyledLink = styled(Link)`
         float: none;
     }
 `
-
-export const Content = styled.div`
-    margin-left: 200px;
-    padding: 1px 16px;
-
-    @media(max-width: 700px){
-        margin-left: 0;
-    }
-`

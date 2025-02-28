@@ -12,7 +12,6 @@ export const WithoutCalledsContainer = styled.div`
 
 export const Text = styled.h1`
     font-size: 25px;
-    margin-bottom: 10px;
 `
 
 export const ButtonNewCalled = styled.button`
@@ -27,37 +26,72 @@ export const ButtonNewCalled = styled.button`
     color: #fff;
     gap: 5px;
     border-radius: 5px;
-`
-
-export const CalledsContainer = styled.div`
-    display: flex;
-    flex-direction: column;
+    transition: ease-in-out 0.3s;
     margin-top: 10px;
+
+    &:hover{
+        background-color: #5fd204;
+        transform: scale(1.05);
+    }
 `
 
 export const TableContainer = styled.table`
+    border: 1px solid #ccc;
+    margin: 0;
+    padding: 0;
     border-collapse: collapse;
     margin-top: 10px;
+    width: 100%;
+
+    @media(max-width: 911px){
+        border: 0;
+    }
+`
+
+export const TableHead = styled.thead`
+    @media(max-width: 911px){
+        border: none;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+`
+
+export const TableHeader = styled.th`
+    text-align: center;
+    padding: 0.60em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85em;
 `
 
 export const TableBody = styled.tbody``
 
 export const TableRow = styled.tr`
-    border-right: 1px solid #000;
-    border-left: 1px solid #000;
-`
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 0.35em;
 
-export const TableHeader = styled.th`
-    text-align: left;
-    padding: 5px 10px;
-    border: 1px solid #000;
+    @media(max-width: 911px){
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: 0.60em;
+    }
 `
 
 export const TableData = styled.td`
-    padding: 5px 10px;
-    border-bottom: 1px solid #000;
+    padding: 0.60em;
+    text-align: center;
 
-    
+    @media(max-width: 911px){
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 0.8em;
+        text-align: right;
+    }
 `
 export const LabelStatus = styled.label`
     color: #fff;
@@ -82,6 +116,10 @@ export const Buttons = styled.div`
     justify-content: center;
     align-items: center;
     gap: 5px;
+
+    @media(max-width: 911px){
+        justify-content: flex-end;
+    }
 `
 
 export const Button = styled.button`
@@ -94,4 +132,9 @@ export const Button = styled.button`
     font-size: 18px;
     padding: 3px 5px;
     border-radius: 2px;
+    transition: ease-in-out 0.3s;
+
+    &:hover{
+        transform: scale(1.08);
+    }
 `

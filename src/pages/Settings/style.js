@@ -18,18 +18,8 @@ export const Container = styled.div`
     width: 100%;
     height: auto;
     min-height: 100vh;
-    background-color: #fff;
+    background-color: #efefef;
     padding: 15px;
-`
-
-export const Title = styled.p`
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 22px;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
 `
 
 export const InputUploadPhotoSetting = styled.input``
@@ -69,6 +59,7 @@ export const Input = styled.input`
     min-width: 200px;
     padding: 8px 12px;
     font-size: 16px;
+    background-color: #f8f8f8;
     
     ${({ id }) => id === 'input-email' && `
         cursor: not-allowed;
