@@ -131,27 +131,27 @@ export default function Dashboard() {
                             <TableBody>
                                 {calleds.map((called) => (
                                     <TableRow key={called.id}>
-                                        <TableData>
+                                        <TableData data-label='Código'>
                                             {called.id}
                                         </TableData>
 
-                                        <TableData>
+                                        <TableData data-label='Cliente'>
                                             {called.client}
                                         </TableData>
 
-                                        <TableData>
+                                        <TableData data-label='Assunto'>
                                             {called.subject}
                                         </TableData>
 
-                                        <TableData>
+                                        <TableData data-label='Status'>
                                             <LabelStatus $calledStatus={called.status}>{called.status}</LabelStatus>
                                         </TableData>
 
-                                        <TableData>
+                                        <TableData data-label='Cadastrado'>
                                             {format(new Date(called.createdAt * 1000), 'dd/MM/yyyy', { locale: ptBR })}
                                         </TableData>
 
-                                        <TableData>
+                                        <TableData data-label='#'>
                                             <Buttons>
                                                 <Button onClick={
                                                     () => {
