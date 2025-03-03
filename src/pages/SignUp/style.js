@@ -5,9 +5,9 @@ export const ContainerCenter = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    height: auto;
-    min-height: 100vh;
+    height: 100%;
     padding: 0 12px;
+    background-color: #121212;
 `
 
 export const Login = styled.div`
@@ -25,13 +25,11 @@ export const LogoArea = styled.div`
     background-color: #181c2e;
     display: flex;
     justify-content: center;
-    align-items: center;
 `
 
 export const LogoImg = styled.img`
-    width: 100%;
-    height: auto;
-    max-width: 170px;
+    width: 170px;
+    height: 130px;
     padding: 20px;
 `
 
@@ -43,22 +41,22 @@ export const Form = styled.form`
 `
 
 export const FormInput = styled.input`
-    padding: 10px;
-    border: 0;
-    height: 35px;
-    font-size: 15px;
     margin-bottom: 1rem;
-    background-color: #fff;
+    height: 35px;
     border-radius: 5px;
+    border: 0;
+    padding: 10px;
+    font-size: 15px;
+    background-color: #fff;
 `
 
 export const FormButton = styled.button`
-    border: 0;
     height: 35px;
+    border: 0;
+    border-radius: 5px;
     background-color: #181c2e;
     color: #fff;
     font-size: 1.3rem;
-    border-radius: 5px;
 `
 
 export const StyledLink = styled(Link)`

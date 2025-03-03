@@ -4,55 +4,53 @@ import { ptBR } from 'date-fns/locale';
 
 import {
     Overlay,
-    ModalContent,
-    ButtonContainer,
-    ButtonExit,
     Container,
-    Label,
-    Info,
-    InfoComplement,
-    ComplementContainer
+    Main,
+    Row,
+    ButtonExit,
+    Span,
+    I,
+    P
 } from './style'
 
 import {
     LabelStatus
 } from '../../pages/Dashboard/style';
 
+import {
+
+} from '../../pages/Settings/style';
+
 export default function Modal({ isOpen, onClose, called }) {
     if (!isOpen) return null;
 
     return (
         <Overlay onClick={onClose}>
-            <ModalContent onClick={(e) => e.stopPropagation()}>
-                <ButtonContainer>
-                    <ButtonExit onClick={onClose}>
-                        <IoClose />Voltar
-                    </ButtonExit>
-                </ButtonContainer>
+            <Container onClick={(e) => e.stopPropagation()}>
+                <ButtonExit onClick={onClose}>
+                    <IoClose />Voltar
+                </ButtonExit>
 
-                <Container>
-                    <Label>Cliente:</Label>
-                    <Info>{called.client}</Info>
-                </Container>
+                <Main>
+                    <Row>
+                        <Span>Cliente: <I>{called.client}</I></Span>
+                    </Row>
 
-                <Container>
-                    <Label>Assunto:</Label>
-                    <Info>{called.subject}</Info>
+                    <Row>
+                        <Span>Assunto: <I>{called.subject}</I></Span>
+                        <Span>Cadastrado em: <I>{format(new Date(called.createdAt * 1000), 'dd/MM/yyyy', { locale: ptBR })}</I></Span>
+                    </Row>
 
-                    <Label>Cadastrado em:</Label>
-                    <Info>{format(new Date(called.createdAt * 1000), 'dd/MM/yyyy', { locale: ptBR })}</Info>
-                </Container>
+                    <Row>
+                        <Span>Status: <I><LabelStatus $calledStatus={called.status}>{called.status}</LabelStatus></I></Span>
+                    </Row>
 
-                <Container>
-                    <Label>Status:</Label>
-                    <Info><LabelStatus calledStatus={called.status}>{called.status}</LabelStatus></Info>
-                </Container>
-
-                <ComplementContainer>
-                    <Label>Complemento:</Label>
-                    <InfoComplement>{called.complement}</InfoComplement>
-                </ComplementContainer>
-            </ModalContent>
+                    <>
+                        <Span>Complemento:</Span>
+                        <P>{called.complement}</P>
+                    </>
+                </Main>
+            </Container>
         </Overlay>
     );
 }

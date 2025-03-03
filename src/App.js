@@ -12,7 +12,7 @@ export default function App() {
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
-          closeOnClick={false}
+          closeOnClick={true}
           rtl={false}
           pauseOnFocusLoss={false}
           draggable

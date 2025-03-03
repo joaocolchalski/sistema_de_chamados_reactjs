@@ -9,10 +9,12 @@ import Header from "../../components/Header"
 import Title from "../../components/Title";
 import {
     Screen,
+    Content,
     Container,
     Label,
     Input,
-    ButtonSave
+    Button,
+    FormProfile
 } from "../Settings/style"
 
 export default function Clients() {
@@ -22,7 +24,9 @@ export default function Clients() {
 
     const { user } = useContext(AppContext)
 
-    async function handleAddClient(name, cnpj, address) {
+    async function handleAddClient(e) {
+        e.preventDefault()
+
         if (name.trim().length === 0 || cnpj.trim().length === 0 || address.trim().length === 0) {
             toast.warn('Preencha todos os campos!')
             return
@@ -52,35 +56,39 @@ export default function Clients() {
         <Screen>
             <Header />
 
-            <Container>
+            <Content>
                 <Title icon={<LuPen />} title={'Novo Cliente'} />
 
-                <Label>Nome do Cliente</Label>
-                <Input
-                    type="text"
-                    placeholder="Digite o nome do cliente..."
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
+                <Container>
+                    <FormProfile onSubmit={handleAddClient}>
+                        <Label>Nome do Cliente</Label>
+                        <Input
+                            type="text"
+                            placeholder="Digite o nome do cliente..."
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
 
-                <Label>CNPJ</Label>
-                <Input
-                    type="text"
-                    placeholder="Digite o CNPJ do cliente..."
-                    value={cnpj}
-                    onChange={(e) => setCnpj(e.target.value)}
-                />
+                        <Label>CNPJ</Label>
+                        <Input
+                            type="text"
+                            placeholder="Digite o CNPJ do cliente..."
+                            value={cnpj}
+                            onChange={(e) => setCnpj(e.target.value)}
+                        />
 
-                <Label>Endereço</Label>
-                <Input
-                    type="text"
-                    placeholder="Digite o endereço do cliente..."
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
+                        <Label>Endereço</Label>
+                        <Input
+                            type="text"
+                            placeholder="Digite o endereço do cliente..."
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
 
-                <ButtonSave onClick={() => handleAddClient(name, cnpj, address)}>Salvar</ButtonSave>
-            </Container>
+                        <Button type="submit">Salvar</Button>
+                    </FormProfile>
+                </Container>
+            </Content>
         </Screen>
     )
 }

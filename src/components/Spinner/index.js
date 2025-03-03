@@ -1,7 +1,9 @@
-import { Spinner } from "./style";
 import {
-    Screen,
-    Container
+    Container,
+    Spinner
+} from "./style";
+import {
+    Screen
 } from "../../pages/Settings/style";
 
 export default function SpinnerLoading() {

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { AppContext } from "../../contexts/app"
 import { LuMessageCircle, LuPen } from "react-icons/lu";
 import { IoAdd, IoClose, IoSearch } from "react-icons/io5";
-import { query, where, orderBy, collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { query, where, orderBy, collection, doc, deleteDoc, limit, getDocs, startAfter } from "firebase/firestore";
 import { db } from "../../firebaseConnection";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -14,7 +14,7 @@ import Title from "../../components/Title";
 import SpinnerLoading from "../../components/Spinner";
 import {
     Screen,
-    Container
+    Content
 } from "../Settings/style";
 import {
     WithoutCalledsContainer,
@@ -28,7 +28,8 @@ import {
     LabelStatus,
     Buttons,
     Button,
-    TableHead
+    TableHead,
+    ButtonMore
 } from "./style";
 import Modal from "../../components/Modal";
 
@@ -37,6 +38,9 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true)
     const [modalOpen, setModalOpen] = useState(false);
     const [calledModal, setCalledModal] = useState({})
+    const [isEmpty, setIsEmpty] = useState(false)
+    const [lastCalled, setLastCalled] = useState()
+    const [loadingMore, setLoadingMore] = useState(false)
 
     const { user } = useContext(AppContext)
 
@@ -46,39 +50,79 @@ export default function Dashboard() {
         async function loadCalleds() {
             const collectionRef = collection(db, 'calleds')
 
-            const q = query(collectionRef, orderBy('createdAt', 'desc'), where('userUID', '==', user?.uid))
+            const q = query(collectionRef, orderBy('createdAt', 'desc'), where('userUID', '==', user?.uid), limit(5))
 
-            onSnapshot(q, (calleds) => {
-                let listCalleds = []
-                calleds.forEach((called) => {
-                    listCalleds.push({
-                        id: called.id,
-                        client: called.data().client,
-                        complement: called.data().complement,
-                        createdAt: called.data().createdAt.seconds,
-                        status: called.data().status,
-                        subject: called.data().subject
-                    })
-                })
+            const querySnapshot = await getDocs(q)
+            setCalleds([])
 
-                setCalleds(listCalleds)
-                setLoading(false)
-            })
+            await updateState(querySnapshot)
+
+            setLoading(false)
         }
 
         loadCalleds()
+
+        return () => { }
     }, [user?.uid])
+
+    async function updateState(querySnapshot) {
+        const isCollectionEmpty = querySnapshot.size === 0;
+
+        if (!isCollectionEmpty) {
+            let listCalleds = []
+
+            querySnapshot.forEach((called) => {
+                listCalleds.push({
+                    id: called.id,
+                    client: called.data().client,
+                    complement: called.data().complement,
+                    createdAt: called.data().createdAt.seconds,
+                    status: called.data().status,
+                    subject: called.data().subject
+                })
+            })
+
+            const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
+
+            setCalleds(chamados => [...chamados, ...listCalleds])
+            setLastCalled(lastDoc)
+        } else {
+            setIsEmpty(true)
+        }
+
+        setLoadingMore(false)
+    }
 
     async function handleDeleteCalled(id) {
         const docRef = doc(db, 'calleds', id)
         await deleteDoc(docRef)
-            .then(() => {
+            .then(async () => {
+                const collectionRef = collection(db, 'calleds')
+
+                const q = query(collectionRef, orderBy('createdAt', 'desc'), where('userUID', '==', user?.uid), limit(calleds.length))
+
+                const querySnapshot = await getDocs(q)
+                setCalleds([])
+
+                await updateState(querySnapshot)
                 toast.success('Chamado deletado com sucesso!')
             })
             .catch((err) => {
                 toast.error('Erro ao deletar o chamado!')
                 console.log(err.code)
             })
+    }
+
+    async function handleMore() {
+        setLoadingMore(true)
+
+        const collectionRef = collection(db, 'calleds')
+
+        const q = query(collectionRef, orderBy('createdAt', 'desc'), where('userUID', '==', user?.uid), startAfter(lastCalled), limit(5))
+
+        const querySnapshot = await getDocs(q)
+
+        await updateState(querySnapshot)
     }
 
     if (loading) {
@@ -91,22 +135,18 @@ export default function Dashboard() {
         <Screen>
             <Header />
 
-            <Container>
+            <Content>
                 <Title icon={<LuMessageCircle />} title={'Atendimentos'} />
 
                 {calleds.length > 0 ? (
                     <>
-                        <ButtonNewCalled onClick={() => navigate('/new')} style={{ alignSelf: 'flex-end' }}>
+                        <ButtonNewCalled onClick={() => navigate('/new')}>
                             <IoAdd /> Novo chamado
                         </ButtonNewCalled>
 
                         <TableContainer>
                             <TableHead>
                                 <TableRow>
-                                    <TableHeader scope="col">
-                                        Código
-                                    </TableHeader>
-
                                     <TableHeader scope="col">
                                         Cliente
                                     </TableHeader>
@@ -131,27 +171,23 @@ export default function Dashboard() {
                             <TableBody>
                                 {calleds.map((called) => (
                                     <TableRow key={called.id}>
-                                        <TableData data-label='Código'>
-                                            {called.id}
-                                        </TableData>
-
-                                        <TableData data-label='Cliente'>
+                                        <TableData data-label={"Cliente"}>
                                             {called.client}
                                         </TableData>
 
-                                        <TableData data-label='Assunto'>
+                                        <TableData data-label={"Assunto"}>
                                             {called.subject}
                                         </TableData>
 
-                                        <TableData data-label='Status'>
+                                        <TableData data-label={"Status"}>
                                             <LabelStatus $calledStatus={called.status}>{called.status}</LabelStatus>
                                         </TableData>
 
-                                        <TableData data-label='Cadastrado'>
+                                        <TableData data-label={"Cadastrado"}>
                                             {format(new Date(called.createdAt * 1000), 'dd/MM/yyyy', { locale: ptBR })}
                                         </TableData>
 
-                                        <TableData data-label='#'>
+                                        <TableData data-label={"#"}>
                                             <Buttons>
                                                 <Button onClick={
                                                     () => {
@@ -172,11 +208,16 @@ export default function Dashboard() {
                                                 </Button>
                                             </Buttons>
                                         </TableData>
-                                        <Modal called={calledModal} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </TableContainer>
+
+                        {!loadingMore && !isEmpty &&
+                            <ButtonMore onClick={handleMore}>
+                                {loadingMore ? 'Buscando...' : 'Buscar Mais'}
+                            </ButtonMore>
+                        }
                     </>
                 ) : (
                     <WithoutCalledsContainer>
@@ -186,7 +227,9 @@ export default function Dashboard() {
                         </ButtonNewCalled>
                     </WithoutCalledsContainer>
                 )}
-            </Container>
-        </Screen>
+            </Content >
+
+            <Modal called={calledModal} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        </Screen >
     )
 }

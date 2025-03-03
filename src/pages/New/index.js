@@ -12,9 +12,11 @@ import Title from "../../components/Title"
 import SpinnerLoading from "../../components/Spinner"
 import {
     Screen,
-    Container,
+    Content,
     Label,
-    ButtonSave
+    Button,
+    Container,
+    FormProfile
 } from "../Settings/style"
 import {
     TextArea,
@@ -22,7 +24,7 @@ import {
     Option,
     StatusContainer,
     RadioInput,
-    RadioLabel
+    Span
 } from "./style"
 
 export default function New() {
@@ -93,7 +95,9 @@ export default function New() {
         }
     }, [id])
 
-    async function handleAddCalled() {
+    async function handleAddCalled(e) {
+        e.preventDefault()
+
         if (clientSelect === '' || subjectSelect === '' || statusSelected === '') {
             toast.warn('Selecione todas as opções!')
             return
@@ -122,7 +126,9 @@ export default function New() {
             })
     }
 
-    async function handleEditCalled() {
+    async function handleEditCalled(e) {
+        e.preventDefault()
+
         if (clientSelect === '' || subjectSelect === '' || statusSelected === '') {
             toast.warn('Selecione todas as opções!')
             return
@@ -159,55 +165,59 @@ export default function New() {
     return (
         <Screen>
             <Header />
-            <Container>
+            <Content>
                 <Title icon={id ? <LuPen /> : <IoAdd />} title={id ? 'Editando Chamado' : 'Novo Chamado'} />
 
-                <Label>Cliente</Label>
-                <Select
-                    value={clientSelect}
-                    onChange={(e) => setClientSelect(e.target.value)}
-                >
-                    <Option value={''}>Selecione uma opção...</Option>
-                    {clients.map((client) => (
-                        <Option key={client.id} value={client.name}>{client.name}</Option>
-                    ))}
-                </Select>
+                <Container>
+                    <FormProfile onSubmit={id ? handleEditCalled : handleAddCalled}>
+                        <Label>Cliente</Label>
+                        <Select
+                            value={clientSelect}
+                            onChange={(e) => setClientSelect(e.target.value)}
+                        >
+                            <Option value={''}>Selecione uma opção...</Option>
+                            {clients.map((client) => (
+                                <Option key={client.id} value={client.name}>{client.name}</Option>
+                            ))}
+                        </Select>
 
-                <Label>Assunto</Label>
-                <Select
-                    value={subjectSelect}
-                    onChange={(e) => setSubjectSelect(e.target.value)}
-                >
-                    <Option value={''}>Selecione uma opção...</Option>
-                    {subjects.map((subject, index) => (
-                        <Option key={index} value={subject}>{subject}</Option>
-                    ))}
-                </Select>
+                        <Label>Assunto</Label>
+                        <Select
+                            value={subjectSelect}
+                            onChange={(e) => setSubjectSelect(e.target.value)}
+                        >
+                            <Option value={''}>Selecione uma opção...</Option>
+                            {subjects.map((subject, index) => (
+                                <Option key={index} value={subject}>{subject}</Option>
+                            ))}
+                        </Select>
 
-                <Label>Status</Label>
-                <StatusContainer>
-                    {status.map((option, index) => (
-                        <RadioLabel key={index}>
-                            <RadioInput
-                                type="radio"
-                                value={option}
-                                checked={statusSelected === option}
-                                onChange={(e) => setStatusSelected(e.target.value)}
-                            />
-                            {option}
-                        </RadioLabel>
-                    ))}
-                </StatusContainer>
+                        <Label>Status</Label>
+                        <StatusContainer>
+                            {status.map((option) => (
+                                <>
+                                    <RadioInput
+                                        type="radio"
+                                        value={option}
+                                        checked={statusSelected === option}
+                                        onChange={(e) => setStatusSelected(e.target.value)}
+                                    />
+                                    <Span>{option}</Span>
+                                </>
+                            ))}
+                        </StatusContainer>
 
-                <Label>Complemento</Label>
-                <TextArea
-                    placeholder="Descreva seu problema. (Opcional)"
-                    value={complement}
-                    onChange={(e) => setComplement(e.target.value)}
-                />
+                        <Label>Complemento</Label>
+                        <TextArea
+                            placeholder="Descreva seu problema. (Opcional)"
+                            value={complement}
+                            onChange={(e) => setComplement(e.target.value)}
+                        />
 
-                <ButtonSave onClick={id ? handleEditCalled : handleAddCalled}>{id ? 'Editar' : 'Salvar'}</ButtonSave>
-            </Container>
+                        <Button type="submit">{id ? 'Editar' : 'Salvar'}</Button>
+                    </FormProfile>
+                </Container>
+            </Content>
         </Screen>
     )
 }

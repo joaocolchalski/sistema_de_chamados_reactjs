@@ -1,14 +1,11 @@
 import styled from "styled-components";
 
 export const Select = styled.select`
-    margin-top: 8px;
-    height: 40px;
+    margin-bottom: 2em;
+    padding: 0.7em;
     border: 0;
-    width: 100%;
-    max-width: 400px;
-    min-width: 200px;
-    padding: 8px 12px;
-    font-size: 16px;
+    border-radius: 5px;
+    max-width: 600px;
 `
 
 export const Option = styled.option`
@@ -16,30 +13,28 @@ export const Option = styled.option`
 `
 
 export const TextArea = styled.textarea`
-    margin-top: 8px;
-    height: 40px;
+    margin-bottom: 2em;
+    padding: 0.7em;
     border: 0;
-    width: 90%;
-    height: 150px;
-    padding: 8px;
-    font-size: 15px;
+    border-radius: 5px;
+    max-width: 600px;
+    height: 105px;
+    resize: none;
 `
 
 export const StatusContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-top: 8px;
-    gap:10px;
+    margin-bottom: 2em;
 `
 
-export const RadioLabel = styled.label`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3px ;
+export const Span = styled.span`
+    padding: 4px;
     font-size: 16px;
 `
 
 export const RadioInput = styled.input`
-    
+    &:not(:first-child){
+        margin-left: 15px;
+    }
 ` 

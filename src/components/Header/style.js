@@ -7,7 +7,9 @@ export const Container = styled.div`
     margin: 0;
     padding: 0;
     height: 100%;
+    background-color: #121212;
     overflow: auto;
+    position: fixed;
 
     @media(max-width: 700px){
         width: 100%;
@@ -18,6 +20,7 @@ export const Container = styled.div`
 
 export const ContainerImgUser = styled.div`
     background-image: url(${cover});
+    background-color: #121212;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -49,7 +52,7 @@ export const StyledLink = styled(Link)`
     align-items: center;
     padding: 16px;
     gap: 0.5rem;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: ease-in-out 0.5s;
 
     ${({ $active }) => $active && `
         background-color: #181C2E;
