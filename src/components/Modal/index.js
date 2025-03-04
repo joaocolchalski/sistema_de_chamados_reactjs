@@ -21,9 +21,7 @@ import {
 
 } from '../../pages/Settings/style';
 
-export default function Modal({ isOpen, onClose, called }) {
-    if (!isOpen) return null;
-
+export default function Modal({ onClose, called }) {
     return (
         <Overlay onClick={onClose}>
             <Container onClick={(e) => e.stopPropagation()}>
@@ -45,10 +43,12 @@ export default function Modal({ isOpen, onClose, called }) {
                         <Span>Status: <I><LabelStatus $calledStatus={called.status}>{called.status}</LabelStatus></I></Span>
                     </Row>
 
-                    <>
-                        <Span>Complemento:</Span>
-                        <P>{called.complement}</P>
-                    </>
+                    {called.complement.trim().length > 0 && (
+                        <>
+                            <Span>Complemento:</Span>
+                            <P>{called.complement}</P>
+                        </>
+                    )}
                 </Main>
             </Container>
         </Overlay>

@@ -125,6 +125,11 @@ export default function Dashboard() {
         await updateState(querySnapshot)
     }
 
+    function toggleModal(called) {
+        setCalledModal(called)
+        setModalOpen(true)
+    }
+
     if (loading) {
         return (
             <SpinnerLoading />
@@ -189,13 +194,7 @@ export default function Dashboard() {
 
                                         <TableData data-label={"#"}>
                                             <Buttons>
-                                                <Button onClick={
-                                                    () => {
-                                                        setModalOpen(true)
-                                                        setCalledModal(called)
-                                                    }}
-                                                    $backColor={'#3583F6'}
-                                                >
+                                                <Button onClick={() => toggleModal(called)} $backColor={'#3583F6'}>
                                                     <IoSearch />
                                                 </Button>
 
@@ -229,7 +228,12 @@ export default function Dashboard() {
                 )}
             </Content >
 
-            <Modal called={calledModal} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+            {modalOpen && (
+                <Modal
+                    called={calledModal}
+                    onClose={() => setModalOpen(false)}
+                />
+            )}
         </Screen >
     )
 }
